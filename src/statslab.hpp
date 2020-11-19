@@ -67,8 +67,9 @@ namespace statslab {
     T quantiles(std::valarray<T>&);
 
     // NormalDist
-    class NormalDist(double mu=0.0, double sigma=1.0){
+    class NormalDist{
     public:
+        NormalDist(double mu=0.0, double sigma=1.0);
         /* properties */
         double get_mean();
         double get_median();
@@ -91,7 +92,7 @@ namespace statslab {
         double mode;
         double stdev;
         double variance;
-    }
+    };
 }
 
 #endif // _STATSLAB_H
