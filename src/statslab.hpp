@@ -2,69 +2,81 @@
 #define _STATSLAB_H
 
 #include<valarray>
+#include<vector>
+#include<array>
+#include<list>
+
+/*Input type is either a:
+    - array of type [T]. eg: int data[] = {1, 2, 3}
+    - array type of type T. eg. array<int, size> data{1, 2}
+    - list type of type T. eg. list<int> data{1, 2, 3}
+    - vector type of type T. eg. vector<int> data{1, 2, 3}
+*/
 
 // TODO:
-// Input data is a numeric container of type array, vector, list or
-// valarray.
-// Make sure to take into consideration each of these types.
-// Numeric here mean, int, float or double at least
+// Add documentation to each function as it is being developed and test them
+// that function along the way.
+// Add exception mechanisms to control possible failure.
 
 namespace statslab {
-    // mean
-    template<typename T>
-    T mean(std::valarray<T>&);
+    class NormalDist; // forward declaration
 
-    // geometric_mean
+    // Basic Statistics class
     template<typename T>
-    T geometric_mean(std::valarray<T>&);
+    class StatsLab{
+        template<typename T>
+        using dtype = std::valarary<T>;
 
-    // harmonic_mean
-    template<typename T>
-    T harmonic_mean(std::valarray<T>&);
+        dtype data;
+        friend class NormalDist;
+    public:
 
-    // median
-    template<typename T>
-    T median(std::valarray<T>&);
+        // mean
+        double mean();
 
-    // median_low
-    template<typename T>
-    T median_low(std::valarray<T>&);
+        // geometric_mean
+        double geometric_mean();
 
-    // median_high
-    template<typename T>
-    T median_high(std::valarray<T>&);
+        // harmonic_mean
+        double harmonic_mean();
 
-    // median_grouped
-    template<typename T>
-    T median_grouped(std::valarray<T>&);
+        // median
+        T median();
 
-    // mode
-    template<typename T>
-    T mode(std::valarray<T>&);
+        // median_low
+        T median_low();
 
-    // multimode
-    template<typename T>
-    T multimode(std::valarray<T>&);
+        // median_high
+        T median_high();
 
-    // pstdev
-    template<typename T>
-    T pstdev(std::valarray<T>&);
+        // median_grouped
+        double median_grouped();
 
-    // pvariance
-    template<typename T>
-    T pvariance(std::valarray<T>&);
+        // mode
+        T mode();
+        // maybe add a function return a map of the individual items
+        // and their corresponding frequency for categorial data.
 
-    // stdev
-    template<typename T>
-    T stdev(std::valarray<T>&);
+        // multimode
+        std::vector<T> multimode();
 
-    // variance
-    template<typename T>
-    T variance(std::valarray<T>&);
+        // pstdev
+        double pstdev(double mu=0.0);
 
-    // quantiles
-    template<typename T>
-    T quantiles(std::valarray<T>&);
+        // pvariance
+        double pvariance(double mu=0.0);
+
+        // stdev
+        double stdev(double xbar=0.0);
+
+        // variance
+        double variance(double xbar=0.0);
+
+        // quantiles
+        std::vector<T> quantiles(size_t n=4,
+            std::string method="exclusive");
+    };
+
 
     // NormalDist
     class NormalDist{
@@ -83,8 +95,12 @@ namespace statslab {
         double cdf(double x);
         double inv_cdf(double p);
         double overlap(NormalDist&);
-        std::valarray<double> quantiles(int n=4);
+        std::array<double> quantiles(int n=4);
         double zscore(double x);
+
+        // TODO: Load appropriate operators
+        // +, -, *, /, copy ctor, negation, ++, --,
+        // __hash__, to_string (aka ostream)  
 
     private:
         double mean;
