@@ -176,4 +176,24 @@ double CenterInfo::median_high(){
     return result;
 }//
 
+//
+double CenterInfo::median_high(){
+    double result = 0.0;
+    auto N = data_.size();
+    if (N == 0){
+        std::cerr << "No median for empty data." << std::endl;
+        std::exit(EXIT_FAILURE); 
+    }
+
+    std::vector<double> values(N, 0.0);
+    for(auto elt: data_){
+        values.push_back(elt);
+    }
+    std::sort(values.begin(), values.end());
+
+    result = data_[N/2];
+    
+    return result;
+}
+
 }// namespace statslab
