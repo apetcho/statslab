@@ -53,7 +53,7 @@ public:
     double median();
     double median_low();
     double median_high();
-    double median_grouped();
+    double median_grouped(double interval=1.0);
     double mode();
     //double multimode();
 
