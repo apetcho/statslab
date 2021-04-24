@@ -192,8 +192,89 @@ double CenterInfo::median_high(){
     std::sort(values.begin(), values.end());
 
     result = data_[N/2];
-    
+
     return result;
-}
+}//
+
+double CenterInfo::median_grouped(double interval){
+    //
+    using T = std::vector<double>;
+    //
+    auto find_lteq_ = [](const T& a, double x) -> int {
+        int index = -1;
+        auto ans = std::find(std::begin(a), std::begin(a), x);
+        if(ans = std::end(a)){
+            std::cerr << x << " not in data." << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+        for(auto i=0; i < a.size(); i++){
+            if (a[i] == x){
+                index = i;
+            }
+        }
+
+        if(index == -1){
+            std::cerr << x << "not in data." << std::endl;
+        }
+        return index;
+    };
+    //
+    
+    auto bisectRight = [](const T& arr, double x, int lo, int hi=-1) -> int {
+        int index = -1;
+        if (lo < 0 || lo >= (arr.size()-1)){
+            std::cerr << "bisectRight():: lo must be non-negative "
+                    << "or less than the number of item data array\n";
+            std::exit(EXIT_FAILURE);
+        }
+        if (hi==-1){
+            hi = arr.size();
+        }
+
+        while(lo < hi){
+            auto mid = (lo + hi) / 2;
+            if (x < arr[mid]){
+                hi = mid;
+            }else{
+                lo = mid + 1;
+            }
+        }
+        index = lo;
+        return index;
+    };
+
+    auto find_rteq_ = [](const T& arr, int lo, double x) -> int {
+        index = -1;
+        auto hi = arr.size();
+        auto i = bisectRight(a, x, lo);
+        if(i != (arr.size() + 1) && arr[i-1] == x){
+            index = i - 1;
+        }
+        return index;
+    };
+    
+    //
+    double result = 0.0;
+    auto N = data_.size();
+    std::vector<double> values(N, 0.0);
+    std::copy(std::begin(data_), std::end(data_), values.begin());
+    if (N == 0){
+        std::cerr << "No median for empty data." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }else if(N == 1){
+        result = values[0];
+        return result;
+    }
+
+    auto item = values[N/2];
+    auto lower =  item - interval / 2.0;
+    auto l1 = find_lteq_(values, item);
+    auto l2 = find_rteq_(values, l1, x);
+    auto cf = l1;
+    auto f = l2 - l1 + 1;
+    result = lower + interval * (N / 2.0 - cf) / f;
+
+    return result;
+}//
 
 }// namespace statslab
