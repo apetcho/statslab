@@ -124,6 +124,30 @@ double CenterInfo::harmonic_mean(std::vector<double> weights){
 
     auto val = sumWeights / total;
     return val;
+} //
+
+double CenterInfo::median(){
+    //
+    auto N = data_.size();
+    if (N==0){
+        std::cerr << "No median for empty data." << std::endl;
+    }
+    std::vector<double> values(N, 0.0);
+    for(auto elt: data_){
+        values.push_back(elt);
+    }
+    std::sort(values.begin(), values.end());
+
+    double result = 0.0;
+    if(N % 2 == 1){
+        result = values[N/2];
+    }
+    else {
+        auto i = N/2;
+        result = (values[i-1] + values[i])/2.0;
+    }
+
+    return result;
 }
-//
-}
+
+}// namespace statslab
