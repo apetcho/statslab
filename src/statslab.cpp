@@ -1,6 +1,7 @@
 #include "statslab.hpp"
 #include<iostream>
 #include<cstdlib>
+#include<map>
 #include<algorithm>
 
 namespace statslab{
@@ -276,5 +277,32 @@ double CenterInfo::median_grouped(double interval){
 
     return result;
 }//
+
+//
+double CenterInfo::mode(){
+    std::map<double, int> hist;
+    // make a histogram of data point
+    for(auto key: data_){
+        if(hist.count(key) == 1){
+            hist[key] += 1;
+        }else{
+            hist[key] = 1;
+        }
+    }
+    auto mostCommon = [&hist]() -> double {
+        int common = 0;
+        double ans;
+        for(const auto& [key, val]: hist){
+            if( val > common){
+                common =  val;
+                ans = key;
+            }
+        }
+        return ans;
+    };
+
+    auto result = mostCommon();
+    return result;
+}
 
 }// namespace statslab
