@@ -51,6 +51,9 @@ public:
     double geometric_mean();
     double harmonic_mean(std::vector<double>& weights);
     double median();
+    double median_low();
+    double median_high();
+    double median_grouped();
     double mode();
     //double multimode();
 
