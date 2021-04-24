@@ -56,7 +56,9 @@ public:
     double median_grouped(double interval=1.0);
     double mode();
     std::string mode(const std::vector<std::string>& nominal_data);
-    //double multimode();
+    std::vector<double> multimode();
+    std::vector<std::string> multimode(const std::vector<std::string>& 
+        nominal_data);
 
 private:
     //
