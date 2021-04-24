@@ -49,7 +49,7 @@ public:
 
     double mean();
     double geometric_mean();
-    double harmonic_mean();
+    double harmonic_mean(std::vector<double>& weights);
     double median();
     double mode();
     //double multimode();
